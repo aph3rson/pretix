@@ -470,7 +470,7 @@ class QuestionUpdate(EventPermissionRequiredMixin, QuestionMixin, UpdateView):
 
     @transaction.atomic
     def form_valid(self, form):
-        if form.cleaned_data.get('type') in ('M', 'C'):
+        if form.cleaned_data.get('type') in ('M', 'Mo', 'C', 'Co'):
             if not self.save_formset(self.get_object()):
                 return self.get(self.request, *self.args, **self.kwargs)
 
@@ -521,7 +521,7 @@ class QuestionCreate(EventPermissionRequiredMixin, QuestionMixin, CreateView):
 
     @transaction.atomic
     def form_valid(self, form):
-        if form.cleaned_data.get('type') in ('M', 'C'):
+        if form.cleaned_data.get('type') in ('M', 'Mo', 'C', 'Co'):
             if not self.formset.is_valid():
                 return self.get(self.request, *self.args, **self.kwargs)
 
@@ -529,7 +529,7 @@ class QuestionCreate(EventPermissionRequiredMixin, QuestionMixin, CreateView):
         ret = super().form_valid(form)
         form.instance.log_action('pretix.event.question.added', user=self.request.user, data=dict(form.cleaned_data))
 
-        if form.cleaned_data.get('type') in ('M', 'C'):
+        if form.cleaned_data.get('type') in ('M', 'Mo', 'C', 'Co'):
             self.save_formset(form.instance)
 
         return ret

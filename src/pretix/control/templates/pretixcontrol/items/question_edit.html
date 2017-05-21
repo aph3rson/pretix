@@ -61,6 +61,21 @@
                             </div>
                         </div>
                     {% endfor %}
+                    <div id="other-option">
+                      <div class="sr-only">
+                          {% trans "Other" %}
+                      </div>
+                      <div class="row question-option-row">
+                          <div class="col-xs-10">
+                              <div class="">
+                                  <label class="sr-only" for="id_form-other">Other</label>
+                                  <div class="i18n-form-group">
+                                      <input class="form-control" id="id_form-other" lang="en" name="form-other" placeholder={% trans "Other" %} title="en" type="text" disabled>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
                 </div>
                 <script type="form-template" data-formset-empty-form>
                     {% escapescript %}

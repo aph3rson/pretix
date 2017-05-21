@@ -1,9 +1,12 @@
 /*global $,gettext*/
 
 function question_page_toggle_view() {
-    var show = $("#id_type").val() == "C" || $("#id_type").val() == "M";
+    var show = $("#id_type").val() == "C"  || $("#id_type").val() == "Co" ||
+               $("#id_type").val() == "M"  || $("#id_type").val() == "Mo";
+    var showOther = $("#id_type").val() == "Co" || $("#id_type").val() == "Mo";
     $("#answer-options").toggle(show);
-
+    $("#other-option").toggle(showOther);
+    
     show = $("#id_type").val() == "B" && $("#id_required").prop("checked");
     $(".alert-required-boolean").toggle(show);
 }
