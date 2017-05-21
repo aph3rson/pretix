@@ -53,6 +53,25 @@ class InvoiceAddressForm(forms.ModelForm):
             raise ValidationError(_('You need to provide either a company name or your name.'))
 
 
+class ModelChoiceOtherField(forms.ModelChoiceField):
+    """
+    This field class is used for the questions of type CHOICE_OTHER, and allows
+    for picking out an additional "Other" option.
+
+    This field should only need a new widget.
+    """
+
+
+class ModelMultipleChoiceOtherField(forms.ModelMultipleChoiceField):
+    """
+    This field class is used for the questions of type CHOICE_MULTIPLE_OTHER,
+    and allows for picking out an additional "Other" option.
+
+    This field should only need a new widget.
+    """
+
+
+
 class QuestionsForm(forms.Form):
     """
     This form class is responsible for asking order-related questions. This includes
@@ -141,8 +160,22 @@ class QuestionsForm(forms.Form):
                     widget=forms.RadioSelect,
                     initial=initial.options.first() if initial else None,
                 )
+            elif q.type == Question.TYPE_CHOICE_OTHER:
+                field = ModelChoiceOtherField(
+                    queryset=q.options.all(),
+                    label=q.question, required=q.required,
+                    widget=forms.RadioSelect,
+                    initial=initial.options.first() if initial else None,
+                )
             elif q.type == Question.TYPE_CHOICE_MULTIPLE:
                 field = forms.ModelMultipleChoiceField(
+                    queryset=q.options.all(),
+                    label=q.question, required=q.required,
+                    widget=forms.CheckboxSelectMultiple,
+                    initial=initial.options.all() if initial else None,
+                )
+            elif q.type == Question.TYPE_CHOICE_MULTIPLE_OTHER:
+                field = ModelMultipleChoiceOtherField(
                     queryset=q.options.all(),
                     label=q.question, required=q.required,
                     widget=forms.CheckboxSelectMultiple,
